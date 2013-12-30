@@ -1,9 +1,9 @@
 module Geokit
   module Adapters
     class SQLServer < Abstract
-      
+
       class << self
-        
+
         def load(klass)
           klass.connection.execute <<-EOS
             if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[geokit_least]') and xtype in (N'FN', N'IF', N'TF'))
@@ -16,13 +16,13 @@ module Geokit
           EOS
           self.loaded = true
         end
-        
+
       end
-      
+
       def initialize(*args)
         super(*args)
       end
-      
+
       def sphere_distance_sql(lat, lng, multiplier)
         %|
           (ACOS([dbo].geokit_least(1,COS(#{lat})*COS(#{lng})*COS(RADIANS(#{qualified_lat_column_name}))*COS(RADIANS(#{qualified_lng_column_name}))+
@@ -30,14 +30,14 @@ module Geokit
           SIN(#{lat})*SIN(RADIANS(#{qualified_lat_column_name}))))*#{multiplier})
          |
       end
-      
+
       def flat_distance_sql(origin, lat_degree_units, lng_degree_units)
         %|
           SQRT(POWER(#{lat_degree_units}*(#{origin.lat}-#{qualified_lat_column_name}),2)+
           POWER(#{lng_degree_units}*(#{origin.lng}-#{qualified_lng_column_name}),2))
          |
       end
-      
+
     end
   end
 end

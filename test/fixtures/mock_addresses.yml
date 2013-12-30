@@ -6,7 +6,7 @@ address_starbucks:
   postal_code: 75019
   lat: 32.969527
   lng: -96.990159
-  
+
 address_barnes_and_noble:
   addressable: barnes_and_noble (MockOrganization)
   street: 5904 N Macarthur Blvd # 160
